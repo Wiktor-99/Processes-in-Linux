@@ -1,6 +1,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #define FIFO "/tmp/pipe"
 #define BUFF_SIZE 100
@@ -8,8 +10,9 @@
 
 int main() {
     int pipe_fd;
-    pipe_fd = open(FIFO,O_WRONLY);
     char buff[BUFF_SIZE] = {'d'};
+    mkfifo(FIFO, S_IFIFO|0640);//0640 to prawa dostepu garnij sobie
+    pipe_fd = open(FIFO,O_WRONLY);
     printf("Client is running\n");
     printf("Type any msg and q to quit app\n");
     while(buff[0] !=  'q' ){
